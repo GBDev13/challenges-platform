@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useRef } from "react";
 import sdk, { VM } from "@stackblitz/sdk";
 import { CodeEditorContainer } from "./styles";
-import { useRouter } from "next/router";
+import { IChallenge } from "interfaces/challenges.interface";
 
-export default function CodeEditor() {
-  const router = useRouter();
-  const projectId = router.query.id as string;
+interface CodeEditorProps {
+  challenge: IChallenge;
+}
+
+export default function CodeEditor({ challenge }: CodeEditorProps) {
+  const projectId = challenge.embedId;
 
   const vm = useRef<VM | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);

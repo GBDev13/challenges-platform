@@ -66,14 +66,27 @@ enum Difficulty {
 }
 
 model Challenge {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  slug  String @unique
-  title String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String @unique
+  title       String
+  description String
 
   embedId      String
   instructions String
 
   difficulty Difficulty @default(Easy)
 
+  tags Tag[]
+
   @@map("challenges")
+}
+
+model Tag {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String     @unique
+  slug        String     @unique
+  challenge   Challenge? @relation(fields: [challengeId], references: [id])
+  challengeId String?    @db.ObjectId
+
+  @@map("tags")
 }
