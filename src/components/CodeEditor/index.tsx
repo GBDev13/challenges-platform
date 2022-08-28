@@ -5,9 +5,13 @@ import { IChallenge } from "interfaces/challenges.interface";
 
 interface CodeEditorProps {
   challenge: IChallenge;
+  setInstructions: (instructions: string) => void;
 }
 
-export default function CodeEditor({ challenge }: CodeEditorProps) {
+export default function CodeEditor({
+  challenge,
+  setInstructions,
+}: CodeEditorProps) {
   const projectId = challenge.embedId;
 
   const vm = useRef<VM | null>(null);
@@ -32,7 +36,13 @@ export default function CodeEditor({ challenge }: CodeEditorProps) {
         destroy: [],
       });
     }
-  }, [projectId]);
+
+    const snapshot = await vm.current?.getFsSnapshot();
+    if (snapshot) {
+      const instructions = snapshot["README.md"];
+      setInstructions(instructions);
+    }
+  }, [projectId, setInstructions]);
 
   useEffect(() => {
     loadVM();
@@ -43,7 +53,6 @@ export default function CodeEditor({ challenge }: CodeEditorProps) {
     iframeRef.current.contentWindow.document.onkeydown = async (e) => {
       if (e.ctrlKey && e.key === "s") {
         e.preventDefault();
-        console.log("CTRL + S");
         const snapshot = await vm.current?.getFsSnapshot();
         localStorage.setItem(
           `savedData:${projectId}`,

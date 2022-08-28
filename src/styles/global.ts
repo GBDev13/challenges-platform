@@ -1,3 +1,4 @@
+import { rgba } from "polished";
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
@@ -6,6 +7,11 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px ${({ theme }) => rgba(theme.primary, 0.2)}
+    }
   }
 
   body {

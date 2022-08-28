@@ -1,13 +1,27 @@
-import { ChallengeContainer, DifficultyTag, TagsContainer } from "./styles";
-import { BiLinkExternal } from "react-icons/bi";
+import {
+  ChallengeContainer,
+  DifficultyTag,
+  TagItem,
+  TagsContainer,
+} from "./styles";
+import { BiLinkExternal, BiCheckCircle } from "react-icons/bi";
 import Link from "next/link";
 import { IChallenge } from "interfaces/challenges.interface";
+import { useRouter } from "next/router";
+import { MouseEvent } from "react";
 
 interface ChallengeProps {
   challenge: IChallenge;
 }
 
 export function Challenge({ challenge }: ChallengeProps) {
+  const router = useRouter();
+
+  function navigateToTag(e: MouseEvent, tag: string) {
+    e.preventDefault();
+    router.push(`/challenges/tag/${tag}`);
+  }
+
   return (
     <Link href={`/challenges/${challenge.slug}`} passHref>
       <ChallengeContainer>
@@ -22,7 +36,9 @@ export function Challenge({ challenge }: ChallengeProps) {
         <p>{challenge.description}</p>
         <TagsContainer>
           {challenge.tags.map((tag) => (
-            <li key={tag.slug}>{tag.name}</li>
+            <TagItem key={tag.slug} onClick={(e) => navigateToTag(e, tag.slug)}>
+              {tag.name}
+            </TagItem>
           ))}
         </TagsContainer>
       </ChallengeContainer>

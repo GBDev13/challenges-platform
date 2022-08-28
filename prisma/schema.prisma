@@ -71,22 +71,30 @@ model Challenge {
   title       String
   description String
 
-  embedId      String
-  instructions String
+  embedId String
 
   difficulty Difficulty @default(Easy)
 
-  tags Tag[]
+  tags ChallengeTags[]
 
   @@map("challenges")
 }
 
 model Tag {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  name        String     @unique
-  slug        String     @unique
-  challenge   Challenge? @relation(fields: [challengeId], references: [id])
-  challengeId String?    @db.ObjectId
+  id         String          @id @default(auto()) @map("_id") @db.ObjectId
+  name       String          @unique
+  slug       String          @unique
+  challenges ChallengeTags[]
 
   @@map("tags")
+}
+
+model ChallengeTags {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String    @db.ObjectId
+  tag         Tag       @relation(fields: [tagId], references: [id])
+  tagId       String    @db.ObjectId
+
+  @@map("challengeTags")
 }

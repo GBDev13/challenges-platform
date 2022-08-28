@@ -47,26 +47,32 @@ export const ChallengeContainer = styled.a`
     border-color: ${({ theme }) => rgba(theme.primary, 0.5)};
     box-shadow: 0px 3px 9px 3px ${({ theme }) => rgba(theme.primary, 0.05)};
 
-    li,
     svg {
       color: ${({ theme }) => theme.primary};
-      opacity: 1;
     }
   }
 `;
 
-export const TagsContainer = styled.ul`
+export const TagsContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+`;
 
-  li {
-    font-size: 0.9rem;
-    opacity: 0.7;
-    font-family: "Fira Code";
-    transition: 0.4s;
+export const TagItem = styled.button`
+  color: ${({ theme }) => theme.text};
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  opacity: 0.7;
+  font-family: "Fira Code";
+  transition: 0.4s;
+
+  &:hover {
+    opacity: 1;
+    color: ${({ theme }) => theme.primary};
   }
 `;
 

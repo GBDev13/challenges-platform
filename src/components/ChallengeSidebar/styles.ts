@@ -15,6 +15,7 @@ export const ChallengeSidebarContainer = styled.aside<ChallengeSidebarProps>`
   align-items: center;
   background: ${({ theme }) => theme["shape-dark"]};
   padding: 1rem;
+  position: relative;
 
   ::-webkit-scrollbar {
     width: 0.5rem;
@@ -28,6 +29,27 @@ export const ChallengeSidebarContainer = styled.aside<ChallengeSidebarProps>`
     background: ${({ theme }) => theme["shape-light"]};
   }
 
+  button {
+    background: ${({ theme }) => theme["shape-light"]};
+    border: none;
+    color: ${({ theme }) => theme.title};
+    font-family: "Fira Code";
+    padding: 0.3rem 0.5rem;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    &:not(:disabled):hover {
+      background: ${({ theme }) => theme.primary};
+      color: ${({ theme }) => theme["shape-light"]};
+    }
+  }
+
   > button {
     background: none;
     color: ${({ theme }) => theme.title};
@@ -36,6 +58,7 @@ export const ChallengeSidebarContainer = styled.aside<ChallengeSidebarProps>`
     transition: 0.4s;
 
     &:hover {
+      background: none;
       color: ${({ theme }) => theme.primary};
     }
   }
@@ -76,20 +99,6 @@ export const Content = styled.section`
     h1 {
       color: ${({ theme }) => theme.title};
     }
-
-    button {
-      background: ${({ theme }) => theme["shape-light"]};
-      border: none;
-      color: ${({ theme }) => theme.title};
-      font-family: "Fira Code";
-      padding: 0.3rem 0.5rem;
-      transition: 0.4s;
-
-      &:hover {
-        background: ${({ theme }) => theme.primary};
-        color: ${({ theme }) => theme["shape-light"]};
-      }
-    }
   }
 `;
 
@@ -98,6 +107,7 @@ export const InstructionsContainer = styled(ReactMarkdown)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-size: 0.95rem;
 
   img {
     width: 100%;
@@ -113,5 +123,17 @@ export const InstructionsContainer = styled(ReactMarkdown)`
     padding-left: 1rem;
   }
 
-  font-size: 0.95rem;
+  pre {
+    background: ${({ theme }) => theme.shape};
+    padding: 1rem;
+    > div {
+      background: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      code {
+        font-family: "Fira Code", monospace !important;
+        line-height: 160% !important;
+      }
+    }
+  }
 `;
