@@ -120,7 +120,23 @@ export const InstructionsContainer = styled(ReactMarkdown)`
 
   ul,
   ol {
+    list-style: inherit;
     padding-left: 1rem;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    > code {
+      background: ${({ theme }) => theme["shape-light"]};
+      font-family: "Fira Code";
+      padding: 1px 5px;
+      font-size: 80%;
+    }
   }
 
   pre {
