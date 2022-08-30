@@ -10,7 +10,4 @@ export const theme = {
   ["shape-light"]: "#233554",
   orange: "#ffd364",
   red: "#ff6464",
-
-  "dark-slate": "#495670",
-  slate: "#8892b0",
 };
