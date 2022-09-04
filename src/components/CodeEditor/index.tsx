@@ -3,27 +3,29 @@ import sdk, { VM } from "@stackblitz/sdk";
 import { CodeEditorContainer } from "./styles";
 import { IChallenge } from "interfaces/challenges.interface";
 
+const AUTOSAVE_IN_MS = 10000;
+
 interface CodeEditorProps {
   challenge: IChallenge;
   setInstructions: (instructions: string) => void;
 }
 
-export default function CodeEditor({
-  challenge,
-  setInstructions,
-}: CodeEditorProps) {
+export function CodeEditor({ challenge, setInstructions }: CodeEditorProps) {
   const projectId = challenge.embedId;
 
   const vm = useRef<VM | null>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const loadVM = useCallback(async () => {
     vm.current = await sdk.embedProjectId("embed", projectId, {
       openFile: "src/App.tsx",
-      view: "editor",
     });
 
-    vm.current?.editor.setView("default");
+    const snapshot = await vm.current?.getFsSnapshot();
+
+    if (snapshot) {
+      const instructions = snapshot["README.md"];
+      setInstructions(instructions);
+    }
 
     const storagedData = localStorage.getItem(`savedData:${projectId}`);
     if (storagedData) {
@@ -36,12 +38,6 @@ export default function CodeEditor({
         destroy: [],
       });
     }
-
-    const snapshot = await vm.current?.getFsSnapshot();
-    if (snapshot) {
-      const instructions = snapshot["README.md"];
-      setInstructions(instructions);
-    }
   }, [projectId, setInstructions]);
 
   useEffect(() => {
@@ -49,18 +45,23 @@ export default function CodeEditor({
   }, [loadVM]);
 
   useEffect(() => {
-    if (!iframeRef?.current?.contentWindow) return;
-    iframeRef.current.contentWindow.document.onkeydown = async (e) => {
-      if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        const snapshot = await vm.current?.getFsSnapshot();
+    const interval = setInterval(async () => {
+      if (!vm?.current) return;
+
+      const snapshot = await vm.current.getFsSnapshot();
+
+      if (snapshot) {
         localStorage.setItem(
           `savedData:${projectId}`,
           JSON.stringify(snapshot)
         );
       }
-    };
-  }, [iframeRef, projectId]);
+    }, AUTOSAVE_IN_MS);
 
-  return <CodeEditorContainer id="embed" ref={iframeRef} />;
+    return () => {
+      clearInterval(interval);
+    };
+  }, [projectId]);
+
+  return <CodeEditorContainer id="embed" />;
 }

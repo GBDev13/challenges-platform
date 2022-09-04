@@ -8,10 +8,7 @@ import { IChallenge } from "interfaces/challenges.interface";
 import { ChallengeSidebar } from "components/ChallengeSidebar";
 import { ChallengePageContainer } from "styles/pages/challengePage";
 import { prisma } from "lib/prisma";
-
-const CodeEditor = dynamic(() => import("../../components/CodeEditor"), {
-  suspense: true,
-});
+import { CodeEditor } from "components/CodeEditor";
 
 interface ChallengeProps {
   challenge: IChallenge;
@@ -27,9 +24,7 @@ const Challenge: NextPage<ChallengeProps> = ({ challenge }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Suspense fallback={`Loading...`}>
-        <CodeEditor challenge={challenge} setInstructions={setInstructions} />
-      </Suspense>
+      <CodeEditor challenge={challenge} setInstructions={setInstructions} />
       <ChallengeSidebar challenge={challenge} instructions={instructions} />
     </ChallengePageContainer>
   );

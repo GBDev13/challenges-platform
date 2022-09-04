@@ -4,7 +4,7 @@ import {
   TagItem,
   TagsContainer,
 } from "./styles";
-import { BiLinkExternal, BiCheckCircle } from "react-icons/bi";
+import { BiLinkExternal } from "react-icons/bi";
 import Link from "next/link";
 import { IChallenge } from "interfaces/challenges.interface";
 import { useRouter } from "next/router";

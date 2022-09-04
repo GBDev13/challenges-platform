@@ -40,11 +40,7 @@ export const ChallengeSidebarContainer = styled.aside<ChallengeSidebarProps>`
     align-items: center;
     gap: 0.5rem;
 
-    &:disabled {
-      opacity: 0.5;
-    }
-
-    &:not(:disabled):hover {
+    &:hover {
       background: ${({ theme }) => theme.primary};
       color: ${({ theme }) => theme["shape-light"]};
     }
@@ -53,9 +49,7 @@ export const ChallengeSidebarContainer = styled.aside<ChallengeSidebarProps>`
   > button {
     background: none;
     color: ${({ theme }) => theme.title};
-    border: none;
     font-size: 1.2rem;
-    transition: 0.4s;
 
     &:hover {
       background: none;
