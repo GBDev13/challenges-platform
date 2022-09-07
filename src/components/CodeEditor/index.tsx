@@ -6,17 +6,15 @@ import { IChallenge } from "interfaces/challenges.interface";
 const AUTOSAVE_IN_MS = 10000;
 
 interface CodeEditorProps {
-  challenge: IChallenge;
+  embedId: string;
   setInstructions: (instructions: string) => void;
 }
 
-export function CodeEditor({ challenge, setInstructions }: CodeEditorProps) {
-  const projectId = challenge.embedId;
-
+export function CodeEditor({ embedId, setInstructions }: CodeEditorProps) {
   const vm = useRef<VM | null>(null);
 
   const loadVM = useCallback(async () => {
-    vm.current = await sdk.embedProjectId("embed", projectId, {
+    vm.current = await sdk.embedProjectId("embed", embedId, {
       openFile: "src/App.tsx",
     });
 
@@ -27,7 +25,7 @@ export function CodeEditor({ challenge, setInstructions }: CodeEditorProps) {
       setInstructions(instructions);
     }
 
-    const storagedData = localStorage.getItem(`savedData:${projectId}`);
+    const storagedData = localStorage.getItem(`savedData:${embedId}`);
     if (storagedData) {
       await new Promise((resolve) => setTimeout(resolve, 5000));
       const parsed = JSON.parse(storagedData);
@@ -38,7 +36,7 @@ export function CodeEditor({ challenge, setInstructions }: CodeEditorProps) {
         destroy: [],
       });
     }
-  }, [projectId, setInstructions]);
+  }, [embedId, setInstructions]);
 
   useEffect(() => {
     loadVM();
@@ -51,17 +49,14 @@ export function CodeEditor({ challenge, setInstructions }: CodeEditorProps) {
       const snapshot = await vm.current.getFsSnapshot();
 
       if (snapshot) {
-        localStorage.setItem(
-          `savedData:${projectId}`,
-          JSON.stringify(snapshot)
-        );
+        localStorage.setItem(`savedData:${embedId}`, JSON.stringify(snapshot));
       }
     }, AUTOSAVE_IN_MS);
 
     return () => {
       clearInterval(interval);
     };
-  }, [projectId]);
+  }, [embedId]);
 
   return <CodeEditorContainer id="embed" />;
 }

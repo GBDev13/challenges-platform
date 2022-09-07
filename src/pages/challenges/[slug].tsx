@@ -21,11 +21,16 @@ const Challenge: NextPage<ChallengeProps> = ({ challenge }) => {
     <ChallengePageContainer>
       <Head>
         <title>{`${challenge.title} | upskill.code`}</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <CodeEditor challenge={challenge} setInstructions={setInstructions} />
-      <ChallengeSidebar challenge={challenge} instructions={instructions} />
+      <CodeEditor
+        embedId={challenge.embedId}
+        setInstructions={setInstructions}
+      />
+      <ChallengeSidebar
+        challengeTitle={challenge.title}
+        instructions={instructions}
+      />
     </ChallengePageContainer>
   );
 };
@@ -51,9 +56,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const challenge = await prisma.challenge.findUnique({
     where: {
       slug,
-    },
-    include: {
-      tags: true,
     },
   });
 

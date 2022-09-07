@@ -9,12 +9,12 @@ import { useRouter } from "next/router";
 import { Spinner } from "components/Spinner";
 import { prisma } from "lib/prisma";
 
-interface HomeProps {
+interface TagProps {
   challenges: IChallenge[];
   tag: ITag;
 }
 
-const Tag: NextPage<HomeProps> = ({ challenges, tag }) => {
+const Tag: NextPage<TagProps> = ({ challenges, tag }) => {
   const { isFallback } = useRouter();
 
   if (isFallback) return <Spinner />;
@@ -95,7 +95,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       challenges: parsedChallenges,
-      tag: tag,
+      tag,
     },
 
     revalidate: 86400,

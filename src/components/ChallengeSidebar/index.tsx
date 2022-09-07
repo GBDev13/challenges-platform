@@ -12,12 +12,12 @@ import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 
 interface ChallengeSidebarProps {
-  challenge: IChallenge;
+  challengeTitle: string;
   instructions: string;
 }
 
 export function ChallengeSidebar({
-  challenge,
+  challengeTitle,
   instructions,
 }: ChallengeSidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
@@ -41,7 +41,7 @@ export function ChallengeSidebar({
             <button onClick={goToHome}>back to home</button>
             <button onClick={() => setIsOpen(false)}>hide panel</button>
           </div>
-          <h1>{challenge.title}</h1>
+          <h1>{challengeTitle}</h1>
         </header>
 
         <InstructionsContainer
